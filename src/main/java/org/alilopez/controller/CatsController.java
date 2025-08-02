@@ -73,10 +73,24 @@ public class CatsController {
             catsRepository.saveImgsCat(id_gato, urlExtra2, false);
             catsRepository.saveImgsCat(id_gato, urlExtra3, false);
 
+            limpiarArchivosTemporales(imagenPrincipal, imagenExtra1, imagenExtra2, imagenExtra3);
             ctx.status(HttpStatus.CREATED).result("El gato fue registrado");
-
         } catch (Exception e) {
             ctx.status(HttpStatus.BAD_REQUEST).result(e.getMessage());
+        }
+    }
+
+
+    private void limpiarArchivosTemporales(UploadedFile... archivos) {
+        for (UploadedFile archivo : archivos) {
+            if (archivo != null && archivo.content() != null) {
+                try {
+                    archivo.content().close();
+                } catch (IOException e) {
+                    // Log el error pero no fallar
+                    System.err.println("Error cerrando stream: " + e.getMessage());
+                }
+            }
         }
     }
 

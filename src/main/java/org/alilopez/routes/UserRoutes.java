@@ -10,7 +10,8 @@ public class UserRoutes {
     }
     public void register(Javalin app) {
         app.get("/users", userController::getAll);
-        app.post("/users", userController::create);
+        app.post("/register", userController::create);
+        app.post("/login", userController::login);
         app.get("/users/{id}", userController::getById);
         // Ejemplo de más rutas:
         // app.put("/users/:id", userController::update);

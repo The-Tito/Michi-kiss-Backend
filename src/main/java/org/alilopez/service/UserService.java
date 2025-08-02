@@ -1,5 +1,6 @@
 package org.alilopez.service;
 
+import org.alilopez.model.DTO.LoginDTO;
 import org.alilopez.model.User;
 import org.alilopez.repository.UserRepository;
 
@@ -22,5 +23,9 @@ public class UserService {
     public void createUser(User user) throws SQLException {
         // Podrías validar aquí si el email ya existe, etc.
         userRepo.save(user);
+    }
+
+    public LoginDTO loginUser(User user) throws SQLException {
+        return userRepo.login(user);
     }
 }

@@ -2,6 +2,7 @@ package org.alilopez.controller;
 
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import org.alilopez.model.DTO.LoginDTO;
 import org.alilopez.model.User;
 import org.alilopez.service.UserService;
 
@@ -29,7 +30,7 @@ public class UserController {
             int id = Integer.parseInt(ctx.pathParam("id"));
             User user = userService.getByIdUser(id);
             if (user != null) {
-                ctx.json(user);
+                ctx.status(HttpStatus.OK).json(user);
             } else {
                 ctx.status(HttpStatus.NOT_FOUND).result("Usuario no encontrado");
             }
@@ -44,7 +45,17 @@ public class UserController {
             userService.createUser(user);
             ctx.status(201).result("Usuario creado");
         } catch (Exception e) {
-            ctx.status(400).result("Error al crear usuario");
+            ctx.status(400).result(e.getMessage());
+        }
+    }
+
+    public void login(Context ctx) {
+        try {
+            User user = ctx.bodyAsClass(User.class);
+            LoginDTO response =  userService.loginUser(user);
+            ctx.status(HttpStatus.OK).json(response);
+        } catch (Exception e) {
+            ctx.status(404).result("Usuario no encontrado");
         }
     }
 }
